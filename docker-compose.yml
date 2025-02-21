@@ -1,0 +1,28 @@
+# I already have a postgres container running on port 5432, so I'm using 9432 for the new container
+# Same for pgadmin, I'm using 9080 for the new container for convenience
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    container_name: node_course_postgres_container
+    environment:
+      POSTGRES_USER: nodejs_course_admin
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: nodejs_course_database
+    ports:
+      - "9432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: node_course_pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin_password
+      PGADMIN_LISTEN_PORT: 9080
+      PGADMIN_SERVER_PORT: 9432
+      PGADMIN_SERVER_NAME: PostgreSQL
+    ports:
+      - "9080:9080"
+    depends_on:
+      - postgres
